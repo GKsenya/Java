@@ -1,27 +1,36 @@
 package Lesson_6;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class SimpleMultiplication {
 
-    private List<List<Integer>> matrix;
-    private List<Integer> vector;
-    private List<Integer> resultVector = new LinkedList<>();
+    private int[][] matrixFirst;
+    private int[][] matrixSecond;
+    private int[][] result;
+    private int mFHight;
+    private int mSHight;
+    private int mSLength;
 
-    public SimpleMultiplication(List<List<Integer>> matrix, List<Integer> vector) {
-        this.matrix = matrix;
-        this.vector = vector;
+    public SimpleMultiplication(int[][] matrixFirst, int[][] matrixSecond) {
+        this.matrixFirst = matrixFirst;
+        this.matrixSecond = matrixSecond;
+        this.mFHight = matrixFirst.length;
+        this.mSLength = matrixSecond[0].length;
+        this.mSHight = matrixSecond.length;
+
+        this.result = new int[mFHight][mSHight];
     }
 
-    public List<Integer> getResult() throws IncorrectInputData {
-        for (int i = 0; i < matrix.size(); i++) {
-            int element = 0;
-            for (int j = 0; j < vector.size(); j++) {
-                element += matrix.get(i).get(j) * vector.get(j);
+    public int[][] getResult() throws IncorrectInputData {
+        for (int id = 0; id < mFHight; id++) {
+            for (int idx = 0; idx < mSLength; idx++) {
+                int element = 0;
+
+                 for (int i = 0; i < mSHight; i++) {
+                    element += matrixFirst[id][i] * matrixSecond[i][idx];
+//                    System.out.println(element);
+                }
+                result[id][idx] = element;
             }
-            resultVector.add(element);
         }
-        return resultVector;
+        return result;
     }
 }
