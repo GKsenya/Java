@@ -17,4 +17,20 @@ public class FileCurrencyProcessor implements CurrencyProcessor {
             bob.write(currencyInfo.toString()+ ", на " + date.replace("-", ".") + "\n");
         }
     }
+
+    @Override
+    public void saveCurrencies(CurrencyInfo[] currenciesInfo, String date) {
+        for(CurrencyInfo currency:currenciesInfo){
+            try {
+                saveCurrency(currency, date);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public boolean currency_exist(String date) {
+        return false;
+    }
 }
