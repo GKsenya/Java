@@ -13,34 +13,25 @@ public class DataBaseCurrencyProcessor implements CurrencyProcessor {
     private String password = "x1pWjkeSTI";
 
     @Override
-    public void saveCurrency(CurrencyInfo currencyInfo, String date) throws IOException {
-
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url, username, password);
+    public void saveCurrency(CurrencyInfo[] currencyInfo, String date) throws IOException {
+        for(CurrencyInfo currency : currencyInfo) {
             try {
-                Statement stmt = con.createStatement();
-                String request = "INSERT INTO currency_database(char_code, currency_nominal, currency_name, currency_value, currency_date) VALUES ('"
-                        + currencyInfo.getCharCod()
-                        + "'," + currencyInfo.getNominal()
-                        + ",'" + currencyInfo.getName()
-                        + "'," + currencyInfo.getValue()
-                        + ",'" + date + "')";
-                stmt.execute(request);
-                stmt.close();
-            } finally {
-                con.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void saveCurrencies(CurrencyInfo[] currencyInfo, String date) {
-        for (CurrencyInfo currency : currencyInfo) {
-            try {
-                saveCurrency(currency, date);
-            } catch (IOException e) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection(url, username, password);
+                try {
+                    Statement stmt = con.createStatement();
+                    String request = "INSERT INTO currency_database(char_code, currency_nominal, currency_name, currency_value, currency_date) VALUES ('"
+                            + currency.getCharCod()
+                            + "'," + currency.getNominal()
+                            + ",'" + currency.getName()
+                            + "'," + currency.getValue()
+                            + ",'" + date + "')";
+                    stmt.execute(request);
+                    stmt.close();
+                } finally {
+                    con.close();
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

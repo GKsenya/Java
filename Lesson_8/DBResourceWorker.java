@@ -11,7 +11,7 @@ import java.sql.Statement;
 
 public class DBResourceWorker implements ResourceWorker {
 
-    private CurrencyInfo currencyInfoResult = null;
+    private CurrencyInfo currencyInfoResult[] = new CurrencyInfo[1];
 
     private void getCurrency(String code, String date) {
         try {
@@ -24,7 +24,7 @@ public class DBResourceWorker implements ResourceWorker {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM currency_database WHERE char_code = '" + code + "' AND currency_date = '" + date + "'");
                 while (rs.next()) {
-                    currencyInfoResult = new CurrencyInfo(rs.getString("char_code"), rs.getInt("currency_nominal"),
+                    this.currencyInfoResult[0] = new CurrencyInfo(rs.getString("char_code"), rs.getInt("currency_nominal"),
                             rs.getString("currency_name"), rs.getFloat("currency_value"));
                 }
                 rs.close();
@@ -38,13 +38,8 @@ public class DBResourceWorker implements ResourceWorker {
     }
 
     @Override
-    public CurrencyInfo getCurrencyByDate(String code, String date) throws ParserConfigurationException, SAXException, UserException, IOException {
+    public CurrencyInfo[] getCurrenciesByDate(String code, String date) throws ParserConfigurationException, SAXException, UserException, IOException {
         getCurrency(code, date);
-        return currencyInfoResult;
-    }
-
-    @Override
-    public CurrencyInfo[] getCurrenciesByDate(String date) throws ParserConfigurationException, SAXException, UserException, IOException {
-        return new CurrencyInfo[0];
+        return this.currencyInfoResult;
     }
 }

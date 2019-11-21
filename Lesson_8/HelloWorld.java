@@ -19,34 +19,33 @@ public class HelloWorld {
             file = args[2];
 
             EnteredData userData = new EnteredData(date, char_code, file);
-//            EnteredData userData = UserWork.collectUserData();
             ResourceWorker resource = new DBResourceWorker();
-            CurrencyInfo currencyInfo = resource.getCurrencyByDate(userData.getCharCode(), userData.getDate());
+            CurrencyInfo[] currencyInfo = resource.getCurrenciesByDate(userData.getCharCode(), userData.getDate());
 
-            if (currencyInfo == null) {
+            if (currencyInfo[0] == null) {
                 resource = new CBResourceWorker();
-                currencyInfo = resource.getCurrencyByDate(userData.getCharCode(), userData.getDate());
-                CurrencyProcessor fw = new DataBaseCurrencyProcessor();
-                fw.saveCurrency(currencyInfo, date);
-
+                currencyInfo = resource.getCurrenciesByDate(userData.getCharCode(), userData.getDate());
             }
-
             CurrencyProcessor fw = new FileCurrencyProcessor(userData.getOutputPath());
             fw.saveCurrency(currencyInfo, userData.getDate());
+            System.out.println("Запрашиваемая котировка успешно записана в файл " + userData.getOutputPath());
         }
+
+//----------------------------------------DataBaseUpdating-------------------------------------------//
 
         if (args[0].equalsIgnoreCase("updateDB")) {
             date = args[1];
             CurrencyProcessor dbcp = new DataBaseCurrencyProcessor();
             if(!dbcp.currency_exist(date)) {
                 ResourceWorker resource = new CBResourceWorker();
-                CurrencyInfo[] currenciesInfo = resource.getCurrenciesByDate(UserWork.DateChanger(date));
+                CurrencyInfo[] currenciesInfo = resource.getCurrenciesByDate("all", UserWork.DateChanger(date));
 
-                dbcp.saveCurrencies(currenciesInfo, date);
+                dbcp.saveCurrency(currenciesInfo, date);
                 if (args.length == 3) {
                     file = args[2];
                     CurrencyProcessor fcp = new FileCurrencyProcessor(file);
-                    fcp.saveCurrencies(currenciesInfo, date);
+                    fcp.saveCurrency(currenciesInfo, date);
+                    System.out.println("Котировки успешно записаны в файл " + file);
                 }
                 System.out.println("В базу данных успешно добавлены котировки на " + date);
             }else{

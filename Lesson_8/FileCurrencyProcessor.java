@@ -12,19 +12,10 @@ public class FileCurrencyProcessor implements CurrencyProcessor {
     }
 
     @Override
-    public void saveCurrency(CurrencyInfo currencyInfo, String date)  throws IOException  {
-        try(FileWriter bob = new FileWriter(filePath, true)){
-            bob.write(currencyInfo.toString()+ ", на " + date.replace("-", ".") + "\n");
-        }
-    }
-
-    @Override
-    public void saveCurrencies(CurrencyInfo[] currenciesInfo, String date) {
-        for(CurrencyInfo currency:currenciesInfo){
-            try {
-                saveCurrency(currency, date);
-            } catch (IOException e) {
-                e.printStackTrace();
+    public void saveCurrency(CurrencyInfo[] currenciesInfo, String date)  throws IOException  {
+        for(CurrencyInfo currency :currenciesInfo) {
+            try (FileWriter bob = new FileWriter(filePath, true)) {
+                bob.write(currency.toString() + ", на " + date.replace("-", ".") + "\n");
             }
         }
     }
