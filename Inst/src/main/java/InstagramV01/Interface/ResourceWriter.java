@@ -3,8 +3,12 @@ package InstagramV01.Interface;
 import InstagramV01.WorkClasses.User;
 import InstagramV01.WorkClasses.UserPost;
 
+import java.io.FileNotFoundException;
+
 public interface ResourceWriter {
     void saveNewUser(User user);
 
-    void saveNewPost(UserPost userPost);
+    boolean isUserInDB();
+
+    void saveNewPost(UserPost userPost) throws FileNotFoundException;
 }

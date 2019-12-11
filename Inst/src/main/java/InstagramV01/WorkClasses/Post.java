@@ -1,23 +1,30 @@
 package InstagramV01.WorkClasses;
 
-import java.io.FileOutputStream;
-import java.sql.Blob;
-
 public class Post {
     private String date;
-    private String comment;
-    private byte[] img;
-    private String imgIn;
+    private String comment = "";
+    private String img = "";
+    private int none = 0;
 
-    public Post(String date, byte[] img, String comment) {
-        this.date = date;
-        this.comment = comment;
+
+    public Post(String img, String comment) {
+        if (comment == null || comment.equalsIgnoreCase("")) {
+            none ++;
+        }
+        if (img.equalsIgnoreCase("")) {
+            none ++;
+        }
         this.img = img;
+        this.comment = comment;
     }
 
-    public Post(String imgIn, String comment) {
-        this.imgIn = imgIn;
+    public Post(String date, String img, String comment) {
+        this.date = date;
+        if (comment == null) {
+            comment = "";
+        }
         this.comment = comment;
+        this.img = img;
     }
 
     public String getDate() {
@@ -28,12 +35,12 @@ public class Post {
         return comment;
     }
 
-    public byte[] getImg() {
+    public String getImg() {
         return img;
     }
 
-    public String getImgIn() {
-        return imgIn;
+    public int getNone() {
+        return none;
     }
 
     @Override
@@ -44,5 +51,4 @@ public class Post {
                 ", img='" + img + '\'' +
                 '}';
     }
-
 }
